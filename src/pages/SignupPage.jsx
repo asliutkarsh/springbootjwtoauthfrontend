@@ -1,6 +1,6 @@
 import { useState } from "react";
 import useAuthStore from "../store";
-import { useNavigate, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { BASE_URL } from "../api/api";
 import PublicHeader from "../components/PublicHeader";
@@ -62,7 +62,7 @@ const ErrorMessage = styled.p`
   text-align: center;
 `;
 
-const GoogleSignupButton = styled.button`
+const SignupButton = styled.button`
   background-color: #fff;
   color: #4285f4;
   padding: 12px 20px;
@@ -109,7 +109,6 @@ const SignupPage = () => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState(null);
-  const navigate = useNavigate();
   const authStore = useAuthStore();
 
   const handleSubmit = async (e) => {
@@ -124,7 +123,7 @@ const SignupPage = () => {
     try {
       const data = await authStore.register({ username, email, password });
       console.log("Signup successful:", data);
-      navigate("/home");
+      window.location.href = "/home";
     } catch (error) {
       console.error("Signup failed:", error);
       setError(
@@ -133,9 +132,14 @@ const SignupPage = () => {
     }
   };
 
-  const handleGoogleLogin = () => {
+  const handleGoogleSignup = () => {
     console.log("Google login clicked");
     window.location.href = `${BASE_URL}/oauth2/authorization/google`;
+  };
+
+  const handleGithubSignup = () => {
+    console.log("Github login clicked");
+    window.location.href = `${BASE_URL}/oauth2/authorization/github`;
   };
 
   return (
@@ -175,13 +179,21 @@ const SignupPage = () => {
           />
           <Button type="submit">Signup</Button>
 
-          <GoogleSignupButton type="button" onClick={handleGoogleLogin}>
+          <SignupButton type="button" onClick={handleGoogleSignup}> 
             <img
               src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_logo.svg"
               alt="Google logo"
             />
             Signup with Google
-          </GoogleSignupButton>
+          </SignupButton>
+
+          <SignupButton type="button" onClick={handleGithubSignup}>
+            <img
+              src="https://upload.wikimedia.org/wikipedia/commons/9/91/Octicons-mark-github.svg"
+              alt="Github logo"
+            />
+            Signup with Github
+          </SignupButton>
 
           <HaveAccount>
             Already have an account? <StyledLink to="/login">Login</StyledLink>

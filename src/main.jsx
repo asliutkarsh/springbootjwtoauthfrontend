@@ -1,7 +1,5 @@
-import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
-// import App from "./App.jsx";
-import { createBrowserRouter, RouterProvider, Navigate } from "react-router-dom"; // Import Navigate
+import { createBrowserRouter, RouterProvider } from "react-router-dom"; // Import Navigate
 import LoginPage from "./pages/LoginPage";
 import SignupPage from "./pages/SignupPage";
 import HomePage from "./pages/HomePage";

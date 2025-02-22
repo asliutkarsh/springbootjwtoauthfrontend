@@ -1,9 +1,9 @@
-import { useState } from "react";
-import { BASE_URL } from "../api/api"; 
-import { useNavigate , Link} from "react-router-dom"; 
-import styled from "styled-components"; 
-import useAuthStore from "../store"; 
-import PublicHeader from "../components/PublicHeader";
+import { useState } from 'react'
+import { BASE_URL } from '../api/api'
+import { Link } from 'react-router-dom'
+import styled from 'styled-components'
+import useAuthStore from '../store'
+import PublicHeader from '../components/PublicHeader'
 
 // Styled Components for better styling
 const LoginPageContainer = styled.div`
@@ -14,7 +14,7 @@ const LoginPageContainer = styled.div`
   min-height: 100vh; // Ensure full viewport height
   background-color: #f0f0f0; // Example background color
   font-family: sans-serif;
-`;
+`
 
 const LoginForm = styled.form`
   background-color: white;
@@ -24,13 +24,13 @@ const LoginForm = styled.form`
   display: flex;
   flex-direction: column;
   width: 350px; // Slightly wider
-`;
+`
 
 const Title = styled.h1`
   margin-bottom: 20px;
   text-align: center; // Center the title
   color: #333; // Darker heading color
-`;
+`
 
 const Input = styled.input`
   padding: 12px; // Increased padding
@@ -39,7 +39,7 @@ const Input = styled.input`
   border-radius: 4px;
   box-sizing: border-box; // Prevent padding from affecting width
   font-size: 16px; // Larger font size
-`;
+`
 
 const Button = styled.button`
   background-color: #007bff; // Example blue button
@@ -54,15 +54,15 @@ const Button = styled.button`
   &:hover {
     background-color: #0056b3; // Darker blue on hover
   }
-`;
+`
 
 const ErrorMessage = styled.p`
   color: red;
   margin-bottom: 15px;
   text-align: center; // Center error message
-`;
+`
 
-const GoogleLoginButton = styled.button`
+const LoginButton = styled.button`
   background-color: #fff; // White background
   color: #4285f4; // Google blue
   padding: 12px 20px; // Increased padding
@@ -85,63 +85,66 @@ const GoogleLoginButton = styled.button`
   &:hover {
     background-color: #f0f0f0;
   }
-`;
+`
 
 const NoAccount = styled.p`
-    margin-top: 20px;
-    text-align: center;
-    color: #555; // Example color
-`;
+  margin-top: 20px;
+  text-align: center;
+  color: #555; // Example color
+`
 
 // Styled Link (using styled-components' as function)
 const StyledLink = styled(Link)`
-    color: #007bff; // Example link color
-    text-decoration: none; // Remove underline
-    margin-left: 5px; // Add some spacing
-    &:hover {
-        text-decoration: underline; // Add underline on hover
-    }
-`;
-
+  color: #007bff; // Example link color
+  text-decoration: none; // Remove underline
+  margin-left: 5px; // Add some spacing
+  &:hover {
+    text-decoration: underline; // Add underline on hover
+  }
+`
 
 const LoginPage = () => {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState(null);
-  const [isLoading, setIsLoading] = useState(false); // Add loading state
-  const navigate = useNavigate();
-  const authStore = useAuthStore(); // Get the authStore
+  const [username, setUsername] = useState('')
+  const [password, setPassword] = useState('')
+  const [error, setError] = useState(null)
+  const [isLoading, setIsLoading] = useState(false) // Add loading state
+  const authStore = useAuthStore() // Get the authStore
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    setError(null);
-    setIsLoading(true); // Set loading to true
+    e.preventDefault()
+    setError(null)
+    setIsLoading(true) // Set loading to true
 
     try {
-      const data = await authStore.login({ username, password });
-      console.log("Login successful:", data);
-      window.location.href = "/home";
+      const data = await authStore.login({ username, password })
+      console.log('Login successful:', data)
+      window.location.href = '/home'
     } catch (error) {
-      console.error("Login failed:", error);
+      console.error('Login failed:', error)
 
       if (error.message) {
-        setError(error.message);
+        setError(error.message)
       } else if (error.status === 401) {
-        setError("Invalid username or password.");
+        setError('Invalid username or password.')
       } else if (error.request) {
-        setError("Network error. Please try again later.");
+        setError('Network error. Please try again later.')
       } else {
-        setError("An unexpected error occurred. Please try again.");
+        setError('An unexpected error occurred. Please try again.')
       }
     } finally {
-      setIsLoading(false); // Set loading to false in finally block
+      setIsLoading(false) // Set loading to false in finally block
     }
-  };
+  }
 
   const handleGoogleLogin = () => {
-    console.log("Google login clicked");
-    window.location.href = `${BASE_URL}/oauth2/authorization/google`;
-  };
+    console.log('Google login clicked')
+    window.location.href = `${BASE_URL}/oauth2/authorization/google`
+  }
+
+  const handleGithubLogin = () => {
+    console.log('Github login clicked')
+    window.location.href = `${BASE_URL}/oauth2/authorization/github`
+  }
 
   return (
     <>
@@ -167,26 +170,34 @@ const LoginPage = () => {
             required
           />
           <Button type="submit" disabled={isLoading}>
-            {" "}
+            {' '}
             {/* Disable button while loading */}
-            {isLoading ? "Logging in..." : "Login"} {/* Show loading message */}
+            {isLoading ? 'Logging in...' : 'Login'} {/* Show loading message */}
           </Button>
 
-          <GoogleLoginButton type="button" onClick={handleGoogleLogin}>
+          <LoginButton type="button" onClick={handleGoogleLogin}>
             <img
               src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_logo.svg"
               alt="Google logo"
             />
             Login with Google
-          </GoogleLoginButton>
+          </LoginButton>
+          <LoginButton type="button" onClick={handleGithubLogin}>
+            <img
+              src="https://upload.wikimedia.org/wikipedia/commons/9/91/Octicons-mark-github.svg"
+              alt="Github logo"
+            />
+            Login with Github
+          </LoginButton>
 
           <NoAccount>
-            Don't have an account? <StyledLink to="/signup">Signup</StyledLink>
+            Don&apos;t have an account?{' '}
+            <StyledLink to="/signup">Signup</StyledLink>
           </NoAccount>
         </LoginForm>
       </LoginPageContainer>
     </>
-  );
-};
+  )
+}
 
-export default LoginPage;
+export default LoginPage
